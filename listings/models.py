@@ -17,10 +17,15 @@ class Company(models.Model):
         for table in table_mappings:
             tables[table.day.number].append(table.number)
 
+        description = self.description
+        if len(description) > 140:
+            description = description[0:140].strip(' \t\r\n.,;')
+            description = '%s...' % description
+
         return {
             'name': self.name,
             'website': self.website,
-            'description': self.description,  # TODO: truncate description,
+            'description': description,
             'tables': tables,
             'attributes': self.attributes
         }
