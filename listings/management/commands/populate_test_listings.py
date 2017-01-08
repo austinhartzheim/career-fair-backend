@@ -1,3 +1,4 @@
+import base64
 import datetime
 import math
 
@@ -53,7 +54,7 @@ class Command(BaseCommand):
         company.name = 'Company %i' % number
         company.website = 'https://%i.example.com/' % number
         company.description = 'We are company #%i' % number
-        company.attributes = '\x00' * 20
+        company.attributes = base64.encodestring(b'\x00' * 20)
         company.save()
 
         table = Table()
