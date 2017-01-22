@@ -1,6 +1,7 @@
 import base64
 import datetime
 import math
+import random
 
 from django.core.management.base import BaseCommand
 from listings.models import Company, Day, Table
@@ -50,11 +51,19 @@ class Command(BaseCommand):
             company_count += 1
 
     def _create_random_company(self, number, day, table_number):
+        def gen_random_attributes(length):
+            attributes = bytes()
+            for _ in range(length):
+                attributes += bytes(chr(random.randint(0, 255)),
+                                    'raw_unicode_escape')
+
+            return base64.encodestring(attributes)
+
         company = Company()
         company.name = 'Company %i' % number
         company.website = 'https://%i.example.com/' % number
         company.description = 'We are company #%i' % number
-        company.attributes = base64.encodestring(b'\x00' * 20)
+        company.attributes = gen_random_attributes(20)
         company.save()
 
         table = Table()
