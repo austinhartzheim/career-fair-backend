@@ -1,6 +1,7 @@
 import argparse
 import json
 
+import tqdm
 from django.core.management.base import BaseCommand
 from listings.models import Company
 
@@ -17,7 +18,7 @@ class Command(BaseCommand):
         companies = {}
 
         # Load all companies
-        for company in Company.objects.all():
+        for company in tqdm.tqdm(Company.objects.all()):
             companies[company.pk] = company.get_object()
 
         # Set up JSON export
